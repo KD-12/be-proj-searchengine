@@ -1,3 +1,10 @@
+#Entered query is split and words within the sentence undergo permutations to from various sentences.
+#pwords2->bigram model(probability of a two words occuring together)
+#cPword->calculates conditional probability.
+#load_counts->dictionary of all the bigrams of the sentence.
+#product->gives the probability of the entire sentence by multiplying the conditional probabilities of the bigram obtained from load_counts.
+#pwords2 uses cPword and the product function to calculate the probability of two word occuring together given that the previous word has occured.
+
 #Bag of words concept
 import re
 from itertools import permutations as perm
@@ -10,10 +17,10 @@ def pdist(counter):
     N=sum(counter.values())
     return lambda x: counter[x]*1.0/N*1.0
 
-def Pword(w):
+def pword(w):
     return p(w)
 
-def Pwords(words):
+def pwords(words):
     "Probability of words, assuming each word is independent of others."
     return product(p1w(w) for w in words)
 
@@ -21,26 +28,8 @@ def Pwords(words):
 def splits(words,start=0,L=20):
     return [(words[:i],words[i:]) for i in range(start,min(len(words),L)+1)]
 
-def memo(f):
-    cache={}
-    def fmemo(*args):
-        if args not in cache:
-            cache[args]=f(*args)
-        return cache[args]
-    fmemo.cache=cache
-    return fmemo
 
-@memo
-def segment(word):
-    "Returns the most probable segment"
-    if not word:
-        return []
-    else:
-        candidate=([first]+ segment(rest)
-                    for (first,rest) in splits(word,1))
-        return max(candidate,key=Pwords)
-
-def Pwords2(words, prev='<S>'):
+def pwords2(words, prev='<S>'):
     "The probability of a sequence of words, using bigram data, given prev word."
     return product(cPword(w, (prev if (i == 0) else words[i-1]) )
                    for (i, w) in enumerate(words))
@@ -82,25 +71,24 @@ def display(sentence):
     #sent='this is good'
     temp=list(perm(sentence.split()))
     print temp
-    tp=0.0
-    ts=''
+    temp_prob=0.0
+    temp_sent=''
     sent=[]
     for word in temp:
         s=' '.join(word)
         sent.append(s)
+    print sent
     for snt in sent:
-        if tp < Pwords2(snt.split()):
-            tp=Pwords2(snt.split())
-            ts=snt
-
-
-    return ts
+        if temp_prob < pwords2(snt.split(' ')):
+            temp_prob=pwords2(snt.split(' '))
+            temp_sent=snt
+    return temp_sent
 bigramlist=[]
 trigramlist=[]
 
-text=s2.string
+text=s2.author
 count=ts.count
-P=pdist(count)
+prob_dict=pdist(count)
 counts_1=load_counts(text)
 p2w=ts.pdist(counts_1)
 p1w=ts.pdist(count)
@@ -109,12 +97,11 @@ word='jane'
 best_probability=0.0
 best_word=''
 for (prev_word,next_word) in bigramlist:
-    p=Pwords2(ts.tokens(prev_word+' '+next_word))
+    p=pwords2(ts.tokens(prev_word+' '+next_word))
     if re.match(word,prev_word) and p>best_probability:
         best_probability=p
         best_word=prev_word+' '+next_word
-print best_word
+#print best_word
 
-print bigramlist
-#print Pwords2('henry james'.split())
-print display('frenchwoman')
+#print pwords2('henry james'.split())
+print display('robert of letters')

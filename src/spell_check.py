@@ -1,3 +1,10 @@
+# Entered query will get tokenised and the tokens will undergo insertion,transposition,deletion,replacement through functions edit1 and edit2.
+#edit0-> The word requires no alteration and the same word is returned.
+#edit1-> The word requires one insertion/deletion/transposition/replacement and the altered word is returned.
+#edit2-> The word is 2 edits away from the original and hence edit1 is performed twice and the altered word is returned.
+#counts->stores the frequency of tokens.
+#The values returned from edit0,edit1 and edit2 are compared with counts to obtain the maximum frequency amoung them.
+#The word with maximum freuency is displayed.
 import extract_books as s2
 import re
 import string
@@ -55,7 +62,7 @@ def display(words):
     p= map(correct,tokens(words))
     return p
 
-counts=Counter(tokens(s2.string))
+counts=Counter(tokens(s2.author))
 #print map(correct,tokens(words))
 print counts.most_common(5)
-print display('cndada')
+print display('hnryy jmes')
