@@ -24,7 +24,7 @@
     - Coding style is not consistent function names. E.g. `Pword` should be converted to `pword`
     - In language_model.py document the flow of things. The sequence in which functions are called
     - For sample_2.py
-        - Rename sample_2.py should be renamed to cluster_text.py 
+        - Rename sample_2.py should be renamed to cluster_text.py
         - Specify algorithm in text comments i.e. Step 1, Step 2, Step 3 etc..
         - Implement **one algorithm from scratch** even simple KNN/K-Mean algorithm
         - Create a variable called THRESHOLD on top of the file which will allow you to control output and run in different modes
@@ -35,4 +35,4 @@
         2. How will we use book contents for clustering?  (We will use contents of the books for clustering as opposed to just titles and names)
     - spell_check.py and text_segment should have similar comments
 
-
+Note : Foolow thw steps accordingly. 
